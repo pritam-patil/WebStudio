@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Zero JS Playground</title>
+  <style>
+    /* All the CSS from above steps combined */
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: system-ui, -apple-system, sans-serif;
+    }
+
+    body {
+      display: flex;
+      min-height: 100vh;
+      background: #f8fafc;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* Navigation */
+    .left-nav {
+      width: 300px;
+      background: #1e293b;
+      color: white;
+      padding: 1.5rem;
+      display: flex;
+      flex-direction: column;
+      border-right: 1px solid #334155;
+    }
+
+    .logo h1 {
+      font-size: 1.5rem;
+      margin-bottom: 0.5rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .logo p {
+      color: #94a3b8;
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    .nav-sections {
+      flex: 1;
+    }
+
+    .nav-btn {
+      width: 100%;
+      background: transparent;
+      color: #cbd5e1;
+      border: 1px solid #334155;
+      padding: 0.75rem 1rem;
+      margin-bottom: 0.5rem;
+      border-radius: 6px;
+      text-align: left;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .nav-btn:hover {
+      background: #334155;
+      color: white;
+    }
+
+    .nav-btn span {
+      color: #64748b;
+      font-weight: bold;
+    }
+
+    .nav-footer {
+      margin-top: auto;
+      padding-top: 1.5rem;
+      border-top: 1px solid #334155;
+      color: #94a3b8;
+      font-size: 0.85rem;
+    }
+
+    /* Content */
+    .content-area {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+
+    .demo-section {
+      display: none;
+      max-width: 800px;
+    }
+
+    /* Radio-based navigation */
+    .nav-radio {
+      display: none;
+    }
+
+    #show-popover:checked~.content-area #popover-demo,
+    #show-dialog:checked~.content-area #dialog-demo,
+    #show-details:checked~.content-area #details-demo,
+    #show-search:checked~.content-area #search-demo,
+    #show-tabs:checked~.content-area #tabs-demo,
+    #show-form:checked~.content-area #form-demo {
+      display: block;
+    }
+
+    #show-popover:checked~.left-nav label[for="show-popover"],
+    #show-dialog:checked~.left-nav label[for="show-dialog"],
+    #show-details:checked~.left-nav label[for="show-details"],
+    #show-search:checked~.left-nav label[for="show-search"],
+    #show-tabs:checked~.left-nav label[for="show-tabs"],
+    #show-form:checked~.left-nav label[for="show-form"] {
+      background: #3b82f6;
+      color: white;
+      border-color: #3b82f6;
+    }
+
+    #show-popover:checked~.left-nav label[for="show-popover"] span,
+    #show-dialog:checked~.left-nav label[for="show-dialog"] span,
+    #show-details:checked~.left-nav label[for="show-details"] span,
+    #show-search:checked~.left-nav label[for="show-search"] span,
+    #show-tabs:checked~.left-nav label[for="show-tabs"] span,
+    #show-form:checked~.left-nav label[for="show-form"] span {
+      color: white;
+    }
+
+    /* Demo Cards */
+    .demo-card {
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      padding: 1.5rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    }
+
+    .demo-card h3 {
+      color: #475569;
+      margin-bottom: 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .code-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    .demo-actions {
+      margin-top: 1rem;
+      display: flex;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+
+    /* Buttons */
+    .demo-btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      transition: background 0.2s ease;
+    }
+
+    .demo-btn:hover {
+      background: #2563eb;
+    }
+
+    .secondary {
+      background: #64748b;
+    }
+
+    .btn-danger {
+      background: #ef4444;
+      color: white;
+    }
+
+    /* Popover */
+    .custom-popover {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      padding: 1.5rem;
+      border: none;
+      border-radius: 8px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+      max-width: 300px;
+      width: 90vw;
+      background: white;
+      z-index: 1000;
+    }
+
+    .close-btn {
+      background: #ef4444;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+    }
+
+    .form-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: 1rem;
+    }
+
+    /* Dialog */
+    dialog {
+      /* Position fixed in center */
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+
+      /* Box styling */
+      border: none;
+      border-radius: 8px;
+      padding: 2rem;
+      background: white;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+      max-width: 500px;
+      width: 90vw;
+      max-height: 90vh;
+      overflow-y: auto;
+
+      /* Z-index */
+      z-index: 1000;
+
+      /* Start positioned but hidden */
+      opacity: 0;
+      visibility: hidden;
+
+      /* Smooth open/close */
+      transition: opacity 0.2s ease, visibility 0.2s ease;
+
+      /* Reset margins */
+      margin: 0;
+    }
+
+    /* When dialog is open */
+    dialog[open] {
+      opacity: 1;
+      visibility: visible;
+    }
+
+    /* Animation when opening */
+    dialog[open] {
+      animation: dialog-open 0.2s ease;
+    }
+
+    @keyframes dialog-open {
+      from {
+        opacity: 0;
+        transform: translate(-50%, -50%) scale(0.95);
+      }
+
+      to {
+        opacity: 1;
+        transform: translate(-50%, -50%) scale(1);
+      }
+    }
+
+    /* Backdrop */
+    dialog::backdrop {
+      background: rgba(0, 0, 0, 0.5);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+    }
+
+    dialog[open]::backdrop {
+      opacity: 1;
+    }
+
+    /* Dialog Buttons */
+    .dialog-btn {
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 0.9rem;
+      transition: background-color 0.2s;
+    }
+
+    .dialog-btn.primary {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .dialog-btn.primary:hover {
+      background: #2563eb;
+    }
+
+    .dialog-btn.secondary {
+      background: #f3f4f6;
+      color: #374151;
+      border: 1px solid #d1d5db;
+    }
+
+    .dialog-btn.secondary:hover {
+      background: #e5e7eb;
+    }
+
+    /* Demo Button */
+    .demo-btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .demo-btn:hover {
+      background: #2563eb;
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #1a1a1a;
+      color: #f0f0f0;
+      padding: 1rem;
+      border-radius: 4px;
+      margin: 1rem 0;
+      font-family: monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+    }
+
+    /* Form styling inside dialog */
+    form {
+      margin: 0;
+    }
+
+    input,
+    textarea {
+      font-family: inherit;
+      font-size: 1rem;
+    }
+
+    input:focus,
+    textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.2);
+    }
+
+    /* Prevent scroll when dialog is open */
+    body:has(dialog[open]) {
+      overflow: hidden;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      dialog {
+        padding: 1.5rem;
+      }
+
+      .dialog-btn {
+        width: 100%;
+        margin-bottom: 0.5rem;
+      }
+    }
+
+
+    /* Dialog Buttons */
+    .btn-primary,
+    .btn-secondary {
+      padding: 0.75rem 1.5rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: 500;
+      cursor: pointer;
+      font-size: 0.95rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-primary {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .btn-primary:hover {
+      background: #2563eb;
+    }
+
+    .btn-secondary {
+      background: #f3f4f6;
+      color: #374151;
+      border: 1px solid #d1d5db;
+    }
+
+    .btn-secondary:hover {
+      background: #e5e7eb;
+    }
+
+    /* Form in Dialog */
+    .form-group {
+      margin-bottom: 1.25rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .form-group input,
+    .form-group textarea {
+      width: 100%;
+      padding: 0.75rem;
+      border: 1px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group textarea:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    /* Demo Container */
+    .dialog-demo-container {
+      display: flex;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      flex-wrap: wrap;
+    }
+
+    /* Demo Button */
+    .demo-btn {
+      background: #3b82f6;
+      color: white;
+      border: none;
+      padding: 0.75rem 1.5rem;
+      border-radius: 6px;
+      cursor: pointer;
+      font-weight: 500;
+      font-size: 1rem;
+      transition: background 0.2s ease;
+    }
+
+    .demo-btn:hover {
+      background: #2563eb;
+    }
+
+    /* Code Block */
+    .code-block {
+      background: #0f172a;
+      color: #e2e8f0;
+      padding: 1.25rem;
+      border-radius: 8px;
+      margin: 1.5rem 0;
+      font-family: 'Courier New', monospace;
+      font-size: 0.9rem;
+      overflow-x: auto;
+      line-height: 1.5;
+    }
+
+    /* Responsive */
+    @media (max-width: 640px) {
+      .dialog-content {
+        padding: 1.5rem;
+      }
+
+      .dialog-actions {
+        flex-direction: column;
+      }
+
+      .btn-primary,
+      .btn-secondary {
+        width: 100%;
+        text-align: center;
+      }
+    }
+
+
+    /* Accordion */
+    .accordion {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .accordion details {
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .accordion details:last-child {
+      border-bottom: none;
+    }
+
+    .accordion summary {
+      padding: 1rem 1.5rem;
+      background: #f8fafc;
+      cursor: pointer;
+      font-weight: 500;
+      color: #475569;
+      list-style: none;
+      position: relative;
+    }
+
+    .accordion summary:hover {
+      background: #f1f5f9;
+    }
+
+    .accordion summary::after {
+      content: '➕';
+      position: absolute;
+      right: 1.5rem;
+    }
+
+    .accordion details[open] summary::after {
+      content: '➖';
+    }
+
+    .accordion details[open] summary {
+      background: #eff6ff;
+      color: #1d4ed8;
+    }
+
+    .accordion p {
+      padding: 1rem 1.5rem;
+      margin: 0;
+      color: #475569;
+      background: white;
+    }
+
+    /* Search */
+    .search-input {
+      width: 100%;
+      padding: 0.75rem 1rem;
+      border: 2px solid #e2e8f0;
+      border-radius: 6px;
+      font-size: 1rem;
+      margin-bottom: 1rem;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #3b82f6;
+    }
+
+    .searchable-list {
+      list-style: none;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+
+    .searchable-list li {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      background: white;
+    }
+
+    .searchable-list li:last-child {
+      border-bottom: none;
+    }
+
+    .searchable-list li:hover {
+      background: #f8fafc;
+    }
+
+    .note {
+      background: #fef3c7;
+      border-left: 4px solid #f59e0b;
+      padding: 0.75rem;
+      margin-top: 1rem;
+      border-radius: 4px;
+      font-size: 0.9rem;
+      color: #92400e;
+    }
+
+    /* Responsive */
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .left-nav {
+        width: 100%;
+        height: auto;
+        padding: 1rem;
+      }
+
+      .nav-sections {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.5rem;
+        margin-bottom: 1rem;
+      }
+
+      .nav-btn {
+        flex: 1;
+        min-width: 140px;
+        margin-bottom: 0;
+      }
+
+      .nav-footer {
+        display: none;
+      }
+
+      .content-area {
+        padding: 1rem;
+      }
+
+      .custom-popover {
+        max-width: 90vw;
+      }
+    }
+
+    /* TAB STYLES */
+    .css-tabs {
+      border: 1px solid #e2e8f0;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .tab-headers {
+      display: flex;
+      background: #f8fafc;
+      border-bottom: 1px solid #e2e8f0;
+    }
+
+    .tab-headers input[type="radio"] {
+      display: none;
+    }
+
+    .tab-headers label {
+      padding: 1rem 1.5rem;
+      cursor: pointer;
+      color: #64748b;
+      font-weight: 500;
+      border-bottom: 3px solid transparent;
+      transition: all 0.2s ease;
+    }
+
+    .tab-headers label:hover {
+      color: #475569;
+      background: #f1f5f9;
+    }
+
+    .tab-headers input:checked+label {
+      color: #3b82f6;
+      border-bottom-color: #3b82f6;
+      background: white;
+    }
+
+    .tab-content {
+      padding: 1.5rem;
+      background: white;
+    }
+
+    .tab-pane {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    #tab1:checked~.tab-content #pane1,
+    #tab2:checked~.tab-content #pane2,
+    #tab3:checked~.tab-content #pane3 {
+      display: block;
+    }
+
+    @keyframes fadeIn {
+      from {
+        opacity: 0;
+        transform: translateY(10px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .message {
+      background: #f0f9ff;
+      border: 1px solid #bae6fd;
+      border-radius: 6px;
+      padding: 1rem;
+      margin-top: 1rem;
+    }
+
+    /* STYLED TABS */
+    .styled-tabs {
+      border: 1px solid #e2e8f0;
+      border-radius: 12px;
+      overflow: hidden;
+      background: white;
+    }
+
+    .styled-tabs input[type="radio"] {
+      display: none;
+    }
+
+    .tab-labels {
+      display: flex;
+      background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+      padding: 0.5rem;
+    }
+
+    .tab-labels label {
+      flex: 1;
+      text-align: center;
+      padding: 1rem;
+      color: rgba(255, 255, 255, 0.8);
+      cursor: pointer;
+      border-radius: 8px;
+      transition: all 0.3s ease;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .tab-labels label:hover {
+      background: rgba(255, 255, 255, 0.1);
+      color: white;
+    }
+
+    .tab-labels label span {
+      font-size: 1.5rem;
+    }
+
+    #styled-tab1:checked~.tab-labels label[for="styled-tab1"],
+    #styled-tab2:checked~.tab-labels label[for="styled-tab2"],
+    #styled-tab3:checked~.tab-labels label[for="styled-tab3"] {
+      background: rgba(255, 255, 255, 0.2);
+      color: white;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+    }
+
+    .tab-panes {
+      padding: 2rem;
+    }
+
+    .tab-panes .pane {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+
+    #styled-tab1:checked~.tab-panes .pane:nth-child(1),
+    #styled-tab2:checked~.tab-panes .pane:nth-child(2),
+    #styled-tab3:checked~.tab-panes .pane:nth-child(3) {
+      display: block;
+    }
+
+    /* FORM VALIDATION STYLES */
+    .validation-form {
+      max-width: 600px;
+    }
+
+    .form-group {
+      margin-bottom: 1.5rem;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 500;
+      color: #374151;
+    }
+
+    .form-group input,
+    .form-group select {
+      width: 100%;
+      padding: 0.75rem;
+      border: 2px solid #d1d5db;
+      border-radius: 6px;
+      font-size: 1rem;
+      transition: all 0.2s ease;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus {
+      outline: none;
+      border-color: #3b82f6;
+      box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
+    }
+
+    /* Validation states */
+    .form-group input:valid {
+      border-color: #10b981;
+    }
+
+    .form-group input:invalid:not(:placeholder-shown) {
+      border-color: #ef4444;
+    }
+
+    .form-group input:invalid:not(:placeholder-shown):focus {
+      border-color: #ef4444;
+      box-shadow: 0 0 0 3px rgba(239, 68, 68, 0.1);
+    }
+
+    .hint {
+      font-size: 0.85rem;
+      color: #6b7280;
+      margin-top: 0.25rem;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: auto;
+    }
+
+    /* LIVE VALIDATION */
+    .live-validation .validation-feedback {
+      margin-top: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .live-validation .valid,
+    .live-validation .invalid {
+      display: none;
+    }
+
+    .live-input:valid~.validation-feedback .valid {
+      display: block;
+      color: #10b981;
+    }
+
+    .live-input:invalid:not(:placeholder-shown)~.validation-feedback .invalid {
+      display: block;
+      color: #ef4444;
+    }
+
+    /* PASSWORD STRENGTH */
+    .password-strength {
+      margin-top: 0.5rem;
+    }
+
+    .strength-meter {
+      height: 4px;
+      background: #e5e7eb;
+      border-radius: 2px;
+      overflow: hidden;
+      margin-bottom: 0.25rem;
+    }
+
+    .strength-bar {
+      height: 100%;
+      width: 0%;
+      background: #ef4444;
+      transition: width 0.3s ease, background 0.3s ease;
+    }
+
+    /* Update strength based on password length */
+    #live-password:valid {
+      --strength: 0.6;
+    }
+
+    #live-password:valid~.password-strength .strength-bar {
+      width: calc(var(--strength) * 100%);
+      background: #f59e0b;
+    }
+
+    #live-password:valid~.password-strength .strength-text {
+      color: #f59e0b;
+    }
+
+    /* Strong password */
+    #live-password:valid:not([value=""])~.password-strength .strength-bar {
+      width: 100%;
+      background: #10b981;
+    }
+
+    #live-password:valid:not([value=""])~.password-strength .strength-text {
+      color: #10b981;
+    }
+
+    .strength-text {
+      font-size: 0.8rem;
+      color: #6b7280;
+    }
+
+    /* PATTERNS CHEATSHEET */
+    .patterns-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+
+    .pattern-card {
+      background: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      padding: 1rem;
+    }
+
+    .pattern-card code {
+      display: block;
+      background: #1e293b;
+      color: #e2e8f0;
+      padding: 0.5rem;
+      border-radius: 4px;
+      font-family: 'Courier New', monospace;
+      margin-bottom: 0.5rem;
+      font-size: 0.9rem;
+    }
+
+    .pattern-card p {
+      font-size: 0.9rem;
+      color: #64748b;
+      margin: 0;
+    }
+
+    /* Show validation messages on invalid submit */
+    .validation-form:invalid button[type="submit"] {
+      opacity: 0.7;
+      cursor: not-allowed;
+    }
+
+    /* DETAILS COMPONENT STYLES */
+    .details-content {
+      padding: 1rem;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .details-content ul {
+      margin: 0.5rem 0 0 1rem;
+    }
+
+    .details-content li {
+      margin-bottom: 0.25rem;
+    }
+
+    .styled-details {
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .styled-details summary {
+      list-style: none;
+      padding: 1rem;
+      background: #eff6ff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .styled-details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .styled-details summary .icon {
+      transition: transform 0.2s ease;
+    }
+
+    .styled-details[open] summary .icon {
+      transform: rotate(90deg);
+    }
+
+    .styled-details .content {
+      padding: 1rem;
+      background: white;
+    }
+
+    /* FILTERABLE LIST */
+    .filterable-list {
+      list-style: none;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .filterable-list li {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      background: white;
+      transition: all 0.2s ease;
+    }
+
+    .filterable-list li:last-child {
+      border-bottom: none;
+    }
+
+    .filterable-list li:hover {
+      background: #f8fafc;
+    }
+
+    /* Highlight when filtered */
+    .filterable-list li.hidden {
+      display: none;
+    }
+
+
+    /* CODE BLOCK STYLING ENHANCEMENT */
+    .code-block {
+      position: relative;
+      margin: 1.5rem 0;
+    }
+
+    .code-block::before {
+      content: 'HTML/CSS Code';
+      position: absolute;
+      top: -10px;
+      left: 10px;
+      background: #0f172a;
+      color: #94a3b8;
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-size: 0.8rem;
+      font-family: system-ui, sans-serif;
+    }
+
+    /* DETAILS COMPONENT STYLES */
+    .details-content {
+      padding: 1rem;
+      background: white;
+      border-top: 1px solid #e2e8f0;
+    }
+
+    .details-content ul {
+      margin: 0.5rem 0 0 1rem;
+    }
+
+    .details-content li {
+      margin-bottom: 0.25rem;
+    }
+
+    .styled-details {
+      border: 2px solid #3b82f6;
+      border-radius: 8px;
+      overflow: hidden;
+      margin-bottom: 1rem;
+    }
+
+    .styled-details summary {
+      list-style: none;
+      padding: 1rem;
+      background: #eff6ff;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+      font-weight: 500;
+    }
+
+    .styled-details summary::-webkit-details-marker {
+      display: none;
+    }
+
+    .styled-details summary .icon {
+      transition: transform 0.2s ease;
+    }
+
+    .styled-details[open] summary .icon {
+      transform: rotate(90deg);
+    }
+
+    .styled-details .content {
+      padding: 1rem;
+      background: white;
+    }
+
+    /* FILTERABLE LIST */
+    .filterable-list {
+      list-style: none;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      overflow: hidden;
+      margin-top: 1rem;
+    }
+
+    .filterable-list li {
+      padding: 0.75rem 1rem;
+      border-bottom: 1px solid #f1f5f9;
+      background: white;
+      transition: all 0.2s ease;
+    }
+
+    .filterable-list li:last-child {
+      border-bottom: none;
+    }
+
+    .filterable-list li:hover {
+      background: #f8fafc;
+    }
+
+    /* Highlight when filtered */
+    .filterable-list li.hidden {
+      display: none;
+    }
+
+    /* SEARCH DEMO STYLES */
+    .filter-buttons {
+      display: flex;
+      gap: 0.5rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .filter-buttons input[type="radio"] {
+      display: none;
+    }
+
+    .filter-buttons label {
+      padding: 0.5rem 1rem;
+      background: #e2e8f0;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+
+    .filter-buttons label:hover {
+      background: #cbd5e1;
+    }
+
+    .filter-buttons input:checked+label {
+      background: #3b82f6;
+      color: white;
+    }
+
+    .items-container {
+      display: grid;
+      gap: 0.5rem;
+    }
+
+    .filter-item {
+      padding: 1rem;
+      background: white;
+      border: 1px solid #e2e8f0;
+      border-radius: 6px;
+      display: none;
+    }
+
+    /* Show all items by default */
+    .filter-item {
+      display: block;
+    }
+
+    /* Hide all when a filter is selected */
+    #show-fruits:checked~.items-container .filter-item,
+    #show-veggies:checked~.items-container .filter-item {
+      display: none;
+    }
+
+    /* Show only fruits */
+    #show-fruits:checked~.items-container .filter-item[data-type="fruit"] {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* Show only veggies */
+    #show-veggies:checked~.items-container .filter-item[data-type="vegetable"] {
+      display: block;
+      animation: fadeIn 0.3s ease;
+    }
+
+    /* Show all when "all" is checked */
+    #show-all:checked~.items-container .filter-item {
+      display: block;
+    }
+
+    .reality-check {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin: 1rem 0;
+    }
+
+    .can-do,
+    .cannot-do {
+      padding: 1rem;
+      border-radius: 8px;
+    }
+
+    .can-do {
+      background: #f0fdf4;
+      border: 1px solid #bbf7d0;
+    }
+
+    .cannot-do {
+      background: #fef2f2;
+      border: 1px solid #fecaca;
+    }
+
+    .can-do h4,
+    .cannot-do h4 {
+      margin-top: 0;
+      margin-bottom: 0.5rem;
+    }
+
+    .can-do ul,
+    .cannot-do ul {
+      margin: 0;
+      padding-left: 1.2rem;
+    }
+
+    .can-do li,
+    .cannot-do li {
+      margin-bottom: 0.25rem;
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+
+<body>
+  <!-- Hidden radio buttons for navigation -->
+  <input type="radio" name="nav" id="show-popover" class="nav-radio" checked>
+  <input type="radio" name="nav" id="show-dialog" class="nav-radio">
+  <input type="radio" name="nav" id="show-details" class="nav-radio">
+  <input type="radio" name="nav" id="show-search" class="nav-radio">
+  <input type="radio" name="nav" id="show-tabs" class="nav-radio">
+  <input type="radio" name="nav" id="show-form" class="nav-radio">
+
+  <!-- Left Navigation -->
+  <nav class="left-nav">
+    <div class="logo">
+      <h1>🎮 Zero JS</h1>
+      <p>Interactive UI without JavaScript</p>
+    </div>
+
+    <div class="nav-sections">
+      <label for="show-popover" class="nav-btn">
+        <span>1.</span> Popover Demo
+      </label>
+
+      <label for="show-dialog" class="nav-btn">
+        <span>2.</span> Dialog Demo
+      </label>
+
+      <label for="show-details" class="nav-btn">
+        <span>3.</span> Details/Accordion
+      </label>
+
+      <label for="show-search" class="nav-btn">
+        <span>4.</span> Live Search
+      </label>
+
+      <label for="show-tabs" class="nav-btn">
+        <span>5.</span> Tabs Demo
+      </label>
+
+      <label for="show-form" class="nav-btn">
+        <span>6.</span> Form Validation
+      </label>
+    </div>
+
+    <div class="nav-footer">
+      <p>💡 <strong>No JavaScript</strong> is running on this page!</p>
+      <p>All interactivity uses pure HTML & CSS.</p>
+    </div>
+  </nav>
+
+  <!-- Main Content -->
+  <main class="content-area">
+    <!-- Popover Demo -->
+    <div class="demo-section" id="popover-demo">
+      <h2>1. Popover API</h2>
+      <p>Create modals/tooltips without JavaScript.</p>
+
+      <div class="demo-card">
+        <h3>🎯 Basic Popover</h3>
+        <p>Click button to show/hide popover. No JavaScript needed!</p>
+
+        <button popovertarget="demo-popover" class="demo-btn">
+          Open Popover
+        </button>
+
+        <div popover id="demo-popover" class="custom-popover">
+          <h4>This is a Popover!</h4>
+          <p>It can contain any HTML content.</p>
+          <p>Click outside or press ESC to close.</p>
+          <button popovertarget="demo-popover" popovertargetaction="hide" class="close-btn">
+            Close
+          </button>
+        </div>
+
+        <div class="code-block">
+          &lt;!-- HTML Popover Example --&gt;
+          &lt;button popovertarget="my-popover"&gt;
+          Open Popover
+          &lt;/button&gt;
+
+          &lt;div popover id="my-popover"&gt;
+          &lt;h4&gt;Popover Title&lt;/h4&gt;
+          &lt;p&gt;Content goes here&lt;/p&gt;
+          &lt;button popovertarget="my-popover"
+          popovertargetaction="hide"&gt;
+          Close
+          &lt;/button&gt;
+          &lt;/div&gt;
+
+          &lt;style&gt;
+          [popover] {
+          padding: 1.5rem;
+          border: none;
+          border-radius: 8px;
+          box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+          }
+          &lt;/style&gt;
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>📝 Form in Popover</h3>
+        <p>Interactive forms work inside popovers.</p>
+
+        <button popovertarget="form-popover" class="demo-btn">
+          Login Form
+        </button>
+
+        <div popover id="form-popover" class="custom-popover">
+          <h4>Login</h4>
+          <form style="display: grid; gap: 1rem;">
+            <label style="display: block;">
+              Email:
+              <input type="email" required style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;">
+            </label>
+            <label style="display: block;">
+              Password:
+              <input type="password" required style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;">
+            </label>
+            <div class="form-actions">
+              <button type="submit">Login</button>
+              <button type="button" popovertarget="form-popover" popovertargetaction="hide">
+                Cancel
+              </button>
+            </div>
+          </form>
+        </div>
+
+        <div class="code-block">
+          &lt;!-- Form inside Popover --&gt;
+          &lt;button popovertarget="login-popover"&gt;
+          Show Login
+          &lt;/button&gt;
+
+          &lt;div popover id="login-popover"&gt;
+          &lt;form&gt;
+          &lt;label&gt;
+          Email:
+          &lt;input type="email" required&gt;
+          &lt;/label&gt;
+          &lt;label&gt;
+          Password:
+          &lt;input type="password" required&gt;
+          &lt;/label&gt;
+          &lt;div&gt;
+          &lt;button type="submit"&gt;Login&lt;/button&gt;
+          &lt;button type="button"
+          popovertarget="login-popover"
+          popovertargetaction="hide"&gt;
+          Cancel
+          &lt;/button&gt;
+          &lt;/div&gt;
+          &lt;/form&gt;
+          &lt;/div&gt;
+
+          &lt;style&gt;
+          /* Popover automatically handles:
+          • ESC key to close
+          • Click outside to close
+          • Focus trapping
+          • Accessibility roles
+          */
+          &lt;/style&gt;
+        </div>
+      </div>
+    </div>
+
+    <!-- Dialog Demo -->
+    <div class="demo-section" id="dialog-demo">
+      <h2>2. Dialog Element</h2>
+      <p>Native modal dialogs with built-in accessibility.</p>
+
+      <div class="demo-card">
+        <h3>💬 Modal Dialog</h3>
+        <p>Dialog opens centered without layout shift.</p>
+
+        <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+          <button class="demo-btn" onclick="document.getElementById('confirmDialog').showModal()">
+            Open Confirmation Dialog
+          </button>
+
+          <button class="demo-btn" onclick="document.getElementById('alertDialog').showModal()">
+            Open Alert Dialog
+          </button>
+        </div>
+
+        <!-- Confirmation Dialog -->
+        <dialog id="confirmDialog">
+          <h4 style="margin-top: 0; margin-bottom: 1rem;">Delete Item?</h4>
+          <p style="margin-bottom: 1.5rem;">Are you sure you want to delete this item? This action cannot be undone.</p>
+
+          <form method="dialog" style="display: flex; justify-content: flex-end; gap: 0.75rem;">
+            <button value="cancel" class="dialog-btn secondary">Cancel</button>
+            <button value="confirm" class="dialog-btn primary">Delete</button>
+          </form>
+        </dialog>
+
+        <!-- Alert Dialog -->
+        <dialog id="alertDialog">
+          <h4 style="margin-top: 0; margin-bottom: 1rem;">Success!</h4>
+          <p style="margin-bottom: 1.5rem;">Your changes have been saved successfully.</p>
+
+          <form method="dialog" style="display: flex; justify-content: flex-end;">
+            <button value="ok" class="dialog-btn primary">OK</button>
+          </form>
+        </dialog>
+
+        <div class="code-block">
+          &lt;button onclick="document.getElementById('myDialog').showModal()"&gt;
+          Open Dialog
+          &lt;/button&gt;
+
+          &lt;dialog id="myDialog"&gt;
+          &lt;h4&gt;Dialog Title&lt;/h4&gt;
+          &lt;p&gt;Dialog content&lt;/p&gt;
+          &lt;form method="dialog"&gt;
+          &lt;button value="cancel"&gt;Cancel&lt;/button&gt;
+          &lt;button value="confirm"&gt;Confirm&lt;/button&gt;
+          &lt;/form&gt;
+          &lt;/dialog&gt;
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>📝 Form in Dialog</h3>
+        <p>Interactive form inside a dialog.</p>
+
+        <button class="demo-btn" onclick="document.getElementById('formDialog').showModal()"
+          style="margin-bottom: 2rem;">
+          Open Form Dialog
+        </button>
+
+        <dialog id="formDialog">
+          <h4 style="margin-top: 0; margin-bottom: 1.5rem;">Contact Form</h4>
+
+          <form id="contactForm">
+            <div style="margin-bottom: 1rem;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Name *</label>
+              <input type="text" required
+                style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="margin-bottom: 1rem;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Email *</label>
+              <input type="email" required
+                style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;">
+            </div>
+
+            <div style="margin-bottom: 1.5rem;">
+              <label style="display: block; margin-bottom: 0.5rem; font-weight: 500;">Message</label>
+              <textarea rows="3"
+                style="width: 100%; padding: 0.5rem; border: 1px solid #ccc; border-radius: 4px;"></textarea>
+            </div>
+
+            <div
+              style="display: flex; justify-content: flex-end; gap: 0.75rem; border-top: 1px solid #eee; padding-top: 1.5rem;">
+              <button type="button" onclick="document.getElementById('formDialog').close()"
+                class="dialog-btn secondary">
+                Cancel
+              </button>
+              <button type="submit" class="dialog-btn primary">
+                Send Message
+              </button>
+            </div>
+          </form>
+        </dialog>
+
+        <div class="code-block">
+          &lt;dialog id="formDialog"&gt;
+          &lt;h4&gt;Contact Form&lt;/h4&gt;
+          &lt;form&gt;
+          &lt;label&gt;Name *&lt;/label&gt;
+          &lt;input type="text" required&gt;
+
+          &lt;label&gt;Email *&lt;/label&gt;
+          &lt;input type="email" required&gt;
+
+          &lt;div&gt;
+          &lt;button type="button"
+          onclick="document.getElementById('formDialog').close()"&gt;
+          Cancel
+          &lt;/button&gt;
+          &lt;button type="submit"&gt;Send&lt;/button&gt;
+          &lt;/div&gt;
+          &lt;/form&gt;
+          &lt;/dialog&gt;
+        </div>
+      </div>
+    </div>
+
+    <!-- Details/Accordion Demo -->
+    <div class="demo-section" id="details-demo">
+      <h2>3. Details/Summary</h2>
+      <p>Collapsible sections without any JS.</p>
+
+      <div class="demo-card">
+        <h3>📖 FAQ Accordion</h3>
+        <p>Click questions to expand answers.</p>
+
+        <div class="accordion">
+          <details>
+            <summary>What is HTML-only interactivity?</summary>
+            <div class="details-content">
+              <p>Using native HTML elements like popover, dialog, details, and input elements to create interactive
+                features without writing JavaScript.</p>
+              <p><strong>Benefits:</strong> Better performance, built-in accessibility, less code to maintain.</p>
+            </div>
+          </details>
+
+          <details>
+            <summary>Why use HTML over JavaScript?</summary>
+            <div class="details-content">
+              <p>HTML provides:</p>
+              <ul>
+                <li>Built-in browser features</li>
+                <li>Accessibility by default</li>
+                <li>Progressive enhancement</li>
+                <li>Better performance</li>
+                <li>No bundle size overhead</li>
+              </ul>
+            </div>
+          </details>
+
+          <details>
+            <summary>What browsers support these features?</summary>
+            <div class="details-content">
+              <p>Most modern features work in:</p>
+              <ul>
+                <li>Chrome 90+</li>
+                <li>Firefox 88+</li>
+                <li>Safari 15.4+</li>
+                <li>Edge 90+</li>
+              </ul>
+              <p>Some features like popover may need polyfills for older browsers.</p>
+            </div>
+          </details>
+        </div>
+
+        <div class="code-block">
+          &lt;!-- Details/Summary Accordion --&gt;
+          &lt;details&gt;
+          &lt;summary&gt;Question goes here&lt;/summary&gt;
+          &lt;div&gt;
+          &lt;p&gt;Answer content goes here&lt;/p&gt;
+          &lt;p&gt;Can contain &lt;strong&gt;any HTML&lt;/strong&gt;&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;/details&gt;
+
+          &lt;details open&gt;
+          &lt;summary&gt;Initially open&lt;/summary&gt;
+          &lt;p&gt;This starts expanded&lt;/p&gt;
+          &lt;/details&gt;
+
+          &lt;style&gt;
+          details {
+          border: 1px solid #ddd;
+          border-radius: 4px;
+          margin-bottom: 0.5rem;
+          }
+
+          summary {
+          padding: 1rem;
+          background: #f5f5f5;
+          cursor: pointer;
+          font-weight: bold;
+          }
+
+          details[open] summary {
+          background: #e3f2fd;
+          }
+
+          details > div {
+          padding: 1rem;
+          background: white;
+          }
+          &lt;/style&gt;
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>🎨 Styled Details Element</h3>
+        <p>Custom styles for details/summary.</p>
+
+        <details class="styled-details">
+          <summary>
+            <span class="icon">▶️</span>
+            <span class="text">Custom Styled Details</span>
+          </summary>
+          <div class="content">
+            <p>You can fully style the details element with CSS.</p>
+            <p>Custom icons, animations, and layouts are all possible.</p>
+          </div>
+        </details>
+
+        <div class="code-block">
+          &lt;!-- Custom Styled Details --&gt;
+          &lt;details class="styled-details"&gt;
+          &lt;summary&gt;
+          &lt;span class="icon"&gt;▶️&lt;/span&gt;
+          &lt;span&gt;Custom Title&lt;/span&gt;
+          &lt;/summary&gt;
+          &lt;div class="content"&gt;
+          &lt;p&gt;Custom content here&lt;/p&gt;
+          &lt;/div&gt;
+          &lt;/details&gt;
+
+          &lt;style&gt;
+          .styled-details {
+          border: 2px solid #3b82f6;
+          border-radius: 8px;
+          overflow: hidden;
+          }
+
+          .styled-details summary {
+          list-style: none;
+          padding: 1rem;
+          background: #eff6ff;
+          display: flex;
+          align-items: center;
+          gap: 0.5rem;
+          }
+
+          .styled-details summary::-webkit-details-marker {
+          display: none;
+          }
+
+          .styled-details[open] .icon {
+          transform: rotate(90deg);
+          }
+
+          .styled-details .content {
+          padding: 1rem;
+          background: white;
+          }
+          &lt;/style&gt;
+        </div>
+      </div>
+    </div>
+
+    <!-- Search Demo -->
+    <div class="demo-section" id="search-demo">
+      <h2>4. Search & Filter</h2>
+      <p>What HTML can and cannot do for search functionality.</p>
+
+      <!-- Option 1: Datalist -->
+      <div class="demo-card">
+        <h3>🔍 Search with Datalist (Pure HTML)</h3>
+        <p>Browser provides suggestions as you type.</p>
+
+        <label for="search-demo">Try typing "app" or "ban":</label>
+        <input type="text" id="search-demo" list="suggestions" placeholder="Type to see suggestions..."
+          class="search-input">
+
+        <datalist id="suggestions">
+          <option value="Apple">
+          <option value="Banana">
+          <option value="Orange">
+          <option value="Mango">
+          <option value="Strawberry">
+          <option value="Grape">
+        </datalist>
+
+        <div class="code-block">
+          &lt;!-- Browser handles suggestions automatically --&gt;
+          &lt;input type="text" list="fruit-suggestions"&gt;
+
+          &lt;datalist id="fruit-suggestions"&gt;
+          &lt;option value="Apple"&gt;
+          &lt;option value="Banana"&gt;
+          &lt;option value="Orange"&gt;
+          &lt;/datalist&gt;
+        </div>
+      </div>
+
+      <!-- Option 2: CSS Filter with Checkboxes -->
+      <div class="demo-card">
+        <h3>🎯 Filter by Type (Pure CSS)</h3>
+        <p>Click buttons to filter items by category.</p>
+
+        <div class="filter-buttons">
+          <input type="radio" name="item-filter" id="show-all" checked>
+          <label for="show-all">All Items</label>
+
+          <input type="radio" name="item-filter" id="show-fruits">
+          <label for="show-fruits">Fruits</label>
+
+          <input type="radio" name="item-filter" id="show-veggies">
+          <label for="show-veggies">Vegetables</label>
+        </div>
+
+        <div class="items-container">
+          <div class="filter-item" data-type="fruit">🍎 Apple</div>
+          <div class="filter-item" data-type="vegetable">🥕 Carrot</div>
+          <div class="filter-item" data-type="fruit">🍌 Banana</div>
+          <div class="filter-item" data-type="vegetable">🥦 Broccoli</div>
+          <div class="filter-item" data-type="fruit">🍊 Orange</div>
+        </div>
+
+        <div class="code-block">
+          &lt;!-- CSS Filter using :checked --&gt;
+          &lt;input type="radio" name="filter" id="all" checked&gt;
+          &lt;input type="radio" name="filter" id="fruits"&gt;
+
+          &lt;label for="all"&gt;All&lt;/label&gt;
+          &lt;label for="fruits"&gt;Fruits&lt;/label&gt;
+
+          &lt;div class="items"&gt;
+          &lt;div data-type="fruit"&gt;Apple&lt;/div&gt;
+          &lt;div data-type="vegetable"&gt;Carrot&lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;style&gt;
+          .items div { display: none; }
+
+          #all:checked ~ .items div {
+          display: block;
+          }
+
+          #fruits:checked ~ .items div[data-type="fruit"] {
+          display: block;
+          }
+          &lt;/style&gt;
+        </div>
+      </div>
+
+      <!-- Option 3: The Reality Check -->
+      <div class="demo-card">
+        <h3>⚠️ The Truth About Live Search</h3>
+
+        <div class="reality-check">
+          <div class="can-do">
+            <h4>✅ HTML Can Do:</h4>
+            <ul>
+              <li>Auto-suggestions (datalist)</li>
+              <li>Clear search button</li>
+              <li>Filter by pre-defined categories</li>
+              <li>Show/hide with checkboxes</li>
+              <li>Form submission to server</li>
+            </ul>
+          </div>
+
+          <div class="cannot-do">
+            <h4>❌ Needs JavaScript:</h4>
+            <ul>
+              <li>Filter list as you type</li>
+              <li>Search within text content</li>
+              <li>Fuzzy/partial matching</li>
+              <li>Debouncing (performance)</li>
+              <li>Highlight matches in results</li>
+            </ul>
+          </div>
+        </div>
+
+        <p class="note">💡 <strong>Progressive Enhancement:</strong> Use HTML datalist for basic search, enhance with
+          JavaScript for live filtering if needed.</p>
+      </div>
+    </div>
+    <div class="demo-section" id="tabs-demo">
+      <h2>5. Tab Interface</h2>
+      <p>Tabbed content using radio buttons and CSS.</p>
+
+      <div class="demo-card">
+        <h3>📑 CSS-Only Tabs</h3>
+        <p>Switch between tabs without JavaScript using radio buttons.</p>
+
+        <div class="css-tabs">
+          <div class="tab-headers">
+            <input type="radio" id="tab1" name="tab-group" checked>
+            <label for="tab1">Profile</label>
+
+            <input type="radio" id="tab2" name="tab-group">
+            <label for="tab2">Settings</label>
+
+            <input type="radio" id="tab3" name="tab-group">
+            <label for="tab3">Messages</label>
+          </div>
+
+          <div class="tab-content">
+            <div class="tab-pane" id="pane1">
+              <h4>Profile Information</h4>
+              <p>This is your profile tab content.</p>
+              <p>All tab switching happens with pure HTML radio buttons.</p>
+            </div>
+
+            <div class="tab-pane" id="pane2">
+              <h4>Account Settings</h4>
+              <p>Configure your account settings here.</p>
+              <ul>
+                <li>Notification preferences</li>
+                <li>Privacy settings</li>
+                <li>Security options</li>
+              </ul>
+            </div>
+
+            <div class="tab-pane" id="pane3">
+              <h4>Messages</h4>
+              <p>Your message inbox.</p>
+              <div class="message">
+                <strong>From: System</strong>
+                <p>Tab system working without JavaScript!</p>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          &lt;div class="css-tabs"&gt;
+          &lt;!-- Radio buttons as tab controllers --&gt;
+          &lt;input type="radio" id="tab1" name="tab-group" checked&gt;
+          &lt;input type="radio" id="tab2" name="tab-group"&gt;
+
+          &lt;!-- Tab labels --&gt;
+          &lt;label for="tab1"&gt;Tab 1&lt;/label&gt;
+          &lt;label for="tab2"&gt;Tab 2&lt;/label&gt;
+
+          &lt;!-- Tab content --&gt;
+          &lt;div class="tab-content"&gt;
+          &lt;div class="tab-pane"&gt;Content 1&lt;/div&gt;
+          &lt;div class="tab-pane"&gt;Content 2&lt;/div&gt;
+          &lt;/div&gt;
+          &lt;/div&gt;
+
+          &lt;style&gt;
+          /* Hide all panes by default */
+          .tab-pane { display: none; }
+
+          /* Show pane when corresponding radio is checked */
+          #tab1:checked ~ .tab-content #pane1,
+          #tab2:checked ~ .tab-content #pane2 {
+          display: block;
+          }
+          &lt;/style&gt;
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>🎨 Styled Tabs with Icons</h3>
+        <p>Fully styled tabs with hover effects.</p>
+
+        <div class="styled-tabs">
+          <input type="radio" id="styled-tab1" name="styled-tabs" checked>
+          <input type="radio" id="styled-tab2" name="styled-tabs">
+          <input type="radio" id="styled-tab3" name="styled-tabs">
+
+          <div class="tab-labels">
+            <label for="styled-tab1">
+              <span>🏠</span> Home
+            </label>
+            <label for="styled-tab2">
+              <span>⚙️</span> Settings
+            </label>
+            <label for="styled-tab3">
+              <span>📊</span> Analytics
+            </label>
+          </div>
+
+          <div class="tab-panes">
+            <div class="pane">
+              <h4>Welcome Home</h4>
+              <p>This is the home dashboard.</p>
+            </div>
+            <div class="pane">
+              <h4>Settings Panel</h4>
+              <p>Adjust your preferences here.</p>
+            </div>
+            <div class="pane">
+              <h4>Analytics Dashboard</h4>
+              <p>View your data insights.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-section" id="form-demo">
+      <h2>6. Form Validation</h2>
+      <p>Built-in browser validation with real-time feedback.</p>
+
+      <div class="demo-card">
+        <h3>✅ HTML5 Form Validation</h3>
+        <p>Try submitting invalid data to see browser validation.</p>
+
+        <form class="validation-form" novalidate>
+          <div class="form-group">
+            <label for="name">Full Name *</label>
+            <input type="text" id="name" required minlength="2" maxlength="50" placeholder="Enter your name">
+            <div class="hint">Required, 2-50 characters</div>
+          </div>
+
+          <div class="form-group">
+            <label for="email">Email Address *</label>
+            <input type="email" id="email" required placeholder="example@domain.com">
+            <div class="hint">Must be a valid email address</div>
+          </div>
+
+          <div class="form-group">
+            <label for="password">Password *</label>
+            <input type="password" id="password" required minlength="8" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+              placeholder="At least 8 characters">
+            <div class="hint">8+ chars, 1 uppercase, 1 lowercase, 1 number</div>
+          </div>
+
+          <div class="form-group">
+            <label for="age">Age</label>
+            <input type="number" id="age" min="18" max="100" placeholder="Between 18-100">
+            <div class="hint">Must be between 18 and 100</div>
+          </div>
+
+          <div class="form-group">
+            <label for="website">Website</label>
+            <input type="url" id="website" placeholder="https://example.com">
+            <div class="hint">Must be a valid URL</div>
+          </div>
+
+          <div class="form-group">
+            <label for="country">Country *</label>
+            <select id="country" required>
+              <option value="">Select a country</option>
+              <option>United States</option>
+              <option>Canada</option>
+              <option>United Kingdom</option>
+              <option>Australia</option>
+            </select>
+          </div>
+
+          <div class="form-group checkbox-group">
+            <input type="checkbox" id="terms" required>
+            <label for="terms">
+              I agree to the terms and conditions *
+            </label>
+          </div>
+
+          <div class="form-actions">
+            <button type="submit" class="demo-btn">
+              Submit Form
+            </button>
+            <button type="reset" class="demo-btn secondary">
+              Reset
+            </button>
+          </div>
+        </form>
+
+        <div class="code-block">
+          &lt;form novalidate&gt;
+          &lt;!-- Required field --&gt;
+          &lt;input type="text" required minlength="2" maxlength="50"&gt;
+
+          &lt;!-- Email validation --&gt;
+          &lt;input type="email" required&gt;
+
+          &lt;!-- Password pattern --&gt;
+          &lt;input type="password" required
+          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"&gt;
+
+          &lt;!-- Number range --&gt;
+          &lt;input type="number" min="18" max="100"&gt;
+
+          &lt;!-- URL validation --&gt;
+          &lt;input type="url"&gt;
+
+          &lt;button type="submit"&gt;Submit&lt;/button&gt;
+          &lt;/form&gt;
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>🎯 Real-time Validation with CSS</h3>
+        <p>Fields validate as you type using CSS pseudo-classes.</p>
+
+        <div class="live-validation">
+          <div class="form-group">
+            <label for="live-email">Email</label>
+            <input type="email" id="live-email" placeholder="Type valid/invalid email" class="live-input">
+            <div class="validation-feedback">
+              <span class="valid">✓ Valid email</span>
+              <span class="invalid">✗ Please enter a valid email</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="live-url">Website URL</label>
+            <input type="url" id="live-url" placeholder="https://example.com" class="live-input">
+            <div class="validation-feedback">
+              <span class="valid">✓ Valid URL</span>
+              <span class="invalid">✗ Please enter a valid URL</span>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="live-password">Password Strength</label>
+            <input type="password" id="live-password" placeholder="Type to see strength" class="live-input">
+            <div class="password-strength">
+              <div class="strength-meter">
+                <div class="strength-bar"></div>
+              </div>
+              <div class="strength-text">Password strength</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="code-block">
+          &lt;style&gt;
+          /* Show valid/invalid feedback based on input state */
+          .live-input:valid ~ .validation-feedback .valid {
+          display: block;
+          }
+
+          .live-input:invalid:not(:placeholder-shown) ~
+          .validation-feedback .invalid {
+          display: block;
+          }
+
+          /* Password strength based on length */
+          .live-input:valid ~ .password-strength .strength-bar {
+          width: calc(var(--strength) * 100%);
+          }
+          &lt;/style&gt;
+        </div>
+      </div>
+
+      <div class="demo-card">
+        <h3>🔔 Validation Patterns Cheatsheet</h3>
+
+        <div class="patterns-grid">
+          <div class="pattern-card">
+            <code>required</code>
+            <p>Field must be filled</p>
+          </div>
+          <div class="pattern-card">
+            <code>minlength="3"</code>
+            <p>Minimum 3 characters</p>
+          </div>
+          <div class="pattern-card">
+            <code>maxlength="50"</code>
+            <p>Maximum 50 characters</p>
+          </div>
+          <div class="pattern-card">
+            <code>min="0" max="100"</code>
+            <p>Number range 0-100</p>
+          </div>
+          <div class="pattern-card">
+            <code>pattern="\d{3}-\d{3}"</code>
+            <p>Custom regex pattern</p>
+          </div>
+          <div class="pattern-card">
+            <code>type="email"</code>
+            <p>Valid email format</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="demo-card">
+      <h3>🔧 Browser Support Check</h3>
+      <div class="browser-check">
+        <p><strong>Popover support:</strong>
+          <span id="popover-support">Testing...</span>
+        </p>
+        <p><strong>Dialog support:</strong>
+          <span id="dialog-support">Testing...</span>
+        </p>
+      </div>
+    </div>
+    <script>
+      // Minimal diagnostic script
+      if (HTMLElement.prototype.hasOwnProperty('popover')) {
+        document.getElementById('popover-support').textContent = '✅ Supported';
+      } else {
+        document.getElementById('popover-support').textContent = '❌ Not supported';
+      }
+
+      if (typeof HTMLDialogElement === 'function') {
+        document.getElementById('dialog-support').textContent = '✅ Supported';
+      } else {
+        document.getElementById('dialog-support').textContent = '❌ Not supported';
+      }
+    </script>
+  </main>
+</body>
+
+</html>

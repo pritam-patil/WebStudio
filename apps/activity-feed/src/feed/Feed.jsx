@@ -1,6 +1,7 @@
 import "./styles.css";
-import React, { Component } from "react";
+import React, { useEffect } from "react";
 import { List, AutoSizer } from "react-virtualized";
+import { Button } from "@repo/ui/button";
 import Card from "../card/Card";
 
 const elements = [
@@ -23,6 +24,14 @@ const elements = [
 ]
 
 const App = () => {
+    const [data, setData] = React.useState([]);
+
+    useEffect(() => {
+        fetch('https://api.example.com/data')
+            .then(response => response.json())
+            .then(data => setData(data));
+    }, []);
+
 
     const renderRow = ({ index, key, style }) => {
         return (
@@ -34,22 +43,25 @@ const App = () => {
 
     return (
         <div className="App" style={{ height: "100vh", width: "300px" }}>
-            {
-                <AutoSizer>
-                    {({ height, width }) => {
-                        return (
-                            <List
-                                height={height}
-                                rowHeight={180}
-                                rowRenderer={renderRow}
-                                rowCount={elements.length}
-                                overscanRowCount={5}
-                                width={width}
-                            />
-                        );
-                    }}
-                </AutoSizer>
-            }
+            <Button appName="Activity Feed"
+                onClick={() => alert("output is " + 2 + 3)}
+            >
+                Click Me
+            </Button>
+            <AutoSizer>
+                {({ height, width }) => {
+                    return (
+                        <List
+                            height={height}
+                            rowHeight={180}
+                            rowRenderer={renderRow}
+                            rowCount={elements.length}
+                            overscanRowCount={5}
+                            width={width}
+                        />
+                    );
+                }}
+            </AutoSizer>
         </div>
     );
 }

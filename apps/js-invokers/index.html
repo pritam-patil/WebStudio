@@ -216,6 +216,8 @@
       padding: 0.5rem 1rem;
       border-radius: 4px;
       cursor: pointer;
+      margin-top: 16px;
+      margin-left: auto;
     }
 
     .form-actions {
@@ -1301,7 +1303,7 @@
           <h4>This is a Popover!</h4>
           <p>It can contain any HTML content.</p>
           <p>Click outside or press ESC to close.</p>
-          <button popovertarget="demo-popover" popovertargetaction="hide" class="close-btn">
+          <button popovertarget="demo-popover" popovertargetaction="hide" class="dialog-btn secondary">
             Close
           </button>
         </div>
@@ -1352,8 +1354,9 @@
               <input type="password" required style="width: 100%; padding: 0.5rem; margin-top: 0.25rem;">
             </label>
             <div class="form-actions">
-              <button type="submit">Login</button>
-              <button type="button" popovertarget="form-popover" popovertargetaction="hide">
+              <button type="submit" class="dialog-btn primary">Login</button>
+              <button type="button" popovertarget="form-popover" popovertargetaction="hide"
+                class="dialog-btn secondary">
                 Cancel
               </button>
             </div>

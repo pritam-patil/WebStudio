@@ -1,5 +1,6 @@
 {
   "name": "js-invokers",
+  "homepage": "https://js-invokers.vercel.app/",
   "private": true,
   "version": "0.0.0",
   "type": "module",

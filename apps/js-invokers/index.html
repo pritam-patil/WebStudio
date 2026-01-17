@@ -154,16 +154,7 @@
       gap: 0.5rem;
     }
 
-    .code-block {
-      background: #0f172a;
-      color: #e2e8f0;
-      padding: 1rem;
-      border-radius: 4px;
-      margin: 1rem 0;
-      font-family: 'Courier New', monospace;
-      font-size: 0.9rem;
-      overflow-x: auto;
-    }
+
 
     .demo-actions {
       margin-top: 1rem;
@@ -343,16 +334,6 @@
     }
 
     /* Code Block */
-    .code-block {
-      background: #1a1a1a;
-      color: #f0f0f0;
-      padding: 1rem;
-      border-radius: 4px;
-      margin: 1rem 0;
-      font-family: monospace;
-      font-size: 0.9rem;
-      overflow-x: auto;
-    }
 
     /* Form styling inside dialog */
     form {
@@ -476,17 +457,37 @@
     }
 
     /* Code Block */
-    .code-block {
-      background: #0f172a;
-      color: #e2e8f0;
-      padding: 1.25rem;
-      border-radius: 8px;
-      margin: 1.5rem 0;
-      font-family: 'Courier New', monospace;
-      font-size: 0.9rem;
-      overflow-x: auto;
-      line-height: 1.5;
+    pre code {
+      /* Ensure it is displayed as a block and fits its container */
+      display: block;
+      max-width: 100%;
+      overflow: auto;
+      /* Adds scrollbar if content exceeds width */
+      word-wrap: break-word;
+      /* Helps with long lines if needed */
+
+      /* Visual styling */
+      background: #f4f4f4;
+      /* Light gray background */
+      border: 1px solid #ddd;
+      /* Light gray border */
+      border-left: 3px solid #f36d33;
+      /* Colored left border for emphasis */
+      color: #666;
+      /* Text color */
+      padding: 1em 1.5em;
+      /* Spacing inside the block */
+      margin-bottom: 1.6em;
+      /* Spacing below the block */
+
+      /* Font styling */
+      font-family: monospace;
+      /* Monospaced font for code readability */
+      font-size: 15px;
+      line-height: 1.6;
+      /* Good line spacing */
     }
+
 
     /* Responsive */
     @media (max-width: 640px) {
@@ -1034,23 +1035,7 @@
 
 
     /* CODE BLOCK STYLING ENHANCEMENT */
-    .code-block {
-      position: relative;
-      margin: 1.5rem 0;
-    }
 
-    .code-block::before {
-      content: 'HTML/CSS Code';
-      position: absolute;
-      top: -10px;
-      left: 10px;
-      background: #0f172a;
-      color: #94a3b8;
-      padding: 2px 8px;
-      border-radius: 4px;
-      font-size: 0.8rem;
-      font-family: system-ui, sans-serif;
-    }
 
     /* DETAILS COMPONENT STYLES */
     .details-content {
@@ -1316,30 +1301,31 @@
           </button>
         </div>
 
-        <div class="code-block">
+        <pre>
+        <code>
           &lt;!-- HTML Popover Example --&gt;
           &lt;button popovertarget="my-popover"&gt;
-          Open Popover
+            Open Popover
           &lt;/button&gt;
 
           &lt;div popover id="my-popover"&gt;
           &lt;h4&gt;Popover Title&lt;/h4&gt;
           &lt;p&gt;Content goes here&lt;/p&gt;
-          &lt;button popovertarget="my-popover"
-          popovertargetaction="hide"&gt;
-          Close
+          &lt;button popovertarget="my-popover" popovertargetaction="hide"&gt;
+            Close
           &lt;/button&gt;
           &lt;/div&gt;
 
           &lt;style&gt;
-          [popover] {
-          padding: 1.5rem;
-          border: none;
-          border-radius: 8px;
-          box-shadow: 0 10px 25px rgba(0,0,0,0.2);
-          }
+            [popover] {
+              padding: 1.5rem;
+              border: none;
+              border-radius: 8px;
+              box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            }
           &lt;/style&gt;
-        </div>
+        </code>
+        </pre>
       </div>
 
       <div class="demo-card">
@@ -1371,42 +1357,33 @@
           </form>
         </div>
 
-        <div class="code-block">
+        <pre>
+        <code>
           &lt;!-- Form inside Popover --&gt;
           &lt;button popovertarget="login-popover"&gt;
-          Show Login
+           Show Login
           &lt;/button&gt;
 
           &lt;div popover id="login-popover"&gt;
-          &lt;form&gt;
-          &lt;label&gt;
-          Email:
-          &lt;input type="email" required&gt;
-          &lt;/label&gt;
-          &lt;label&gt;
-          Password:
-          &lt;input type="password" required&gt;
-          &lt;/label&gt;
-          &lt;div&gt;
-          &lt;button type="submit"&gt;Login&lt;/button&gt;
-          &lt;button type="button"
-          popovertarget="login-popover"
-          popovertargetaction="hide"&gt;
-          Cancel
-          &lt;/button&gt;
+            &lt;form&gt;
+              &lt;label&gt;
+                Email:
+                &lt;input type="email" required&gt;
+              &lt;/label&gt;
+              &lt;label&gt;
+                Password:
+                &lt;input type="password" required&gt;
+              &lt;/label&gt;
+              &lt;div&gt;
+                &lt;button type="submit"&gt;Login&lt;/button&gt;
+                &lt;button type="button" popovertarget="login-popover" popovertargetaction="hide"&gt;
+                  Cancel
+                &lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/form&gt;
           &lt;/div&gt;
-          &lt;/form&gt;
-          &lt;/div&gt;
-
-          &lt;style&gt;
-          /* Popover automatically handles:
-          • ESC key to close
-          • Click outside to close
-          • Focus trapping
-          • Accessibility roles
-          */
-          &lt;/style&gt;
-        </div>
+        </code>
+        </pre>
       </div>
     </div>
 
@@ -1450,20 +1427,22 @@
           </form>
         </dialog>
 
-        <div class="code-block">
+        <pre>
+        <code>
           &lt;button onclick="document.getElementById('myDialog').showModal()"&gt;
-          Open Dialog
+            Open Dialog
           &lt;/button&gt;
 
           &lt;dialog id="myDialog"&gt;
-          &lt;h4&gt;Dialog Title&lt;/h4&gt;
-          &lt;p&gt;Dialog content&lt;/p&gt;
-          &lt;form method="dialog"&gt;
-          &lt;button value="cancel"&gt;Cancel&lt;/button&gt;
-          &lt;button value="confirm"&gt;Confirm&lt;/button&gt;
-          &lt;/form&gt;
+            &lt;h4&gt;Dialog Title&lt;/h4&gt;
+            &lt;p&gt;Dialog content&lt;/p&gt;
+            &lt;form method="dialog"&gt;
+              &lt;button value="cancel"&gt;Cancel&lt;/button&gt;
+              &lt;button value="confirm"&gt;Confirm&lt;/button&gt;
+            &lt;/form&gt;
           &lt;/dialog&gt;
-        </div>
+        </code>
+        </pre>
       </div>
 
       <div class="demo-card">
@@ -1510,26 +1489,27 @@
           </form>
         </dialog>
 
-        <div class="code-block">
+        <pre>
+        <code>
           &lt;dialog id="formDialog"&gt;
-          &lt;h4&gt;Contact Form&lt;/h4&gt;
-          &lt;form&gt;
-          &lt;label&gt;Name *&lt;/label&gt;
-          &lt;input type="text" required&gt;
+            &lt;h4&gt;Contact Form&lt;/h4&gt;
+            &lt;form&gt;
+              &lt;label&gt;Name *&lt;/label&gt;
+              &lt;input type="text" required&gt;
 
-          &lt;label&gt;Email *&lt;/label&gt;
-          &lt;input type="email" required&gt;
+              &lt;label&gt;Email *&lt;/label&gt;
+              &lt;input type="email" required&gt;
 
-          &lt;div&gt;
-          &lt;button type="button"
-          onclick="document.getElementById('formDialog').close()"&gt;
-          Cancel
-          &lt;/button&gt;
-          &lt;button type="submit"&gt;Send&lt;/button&gt;
-          &lt;/div&gt;
-          &lt;/form&gt;
+              &lt;div&gt;
+                &lt;button type="button" onclick="document.getElementById('formDialog').close()"&gt;
+                  Cancel
+                &lt;/button&gt;
+                &lt;button type="submit"&gt;Send&lt;/button&gt;
+              &lt;/div&gt;
+            &lt;/form&gt;
           &lt;/dialog&gt;
-        </div>
+        </code>
+        </pre>
       </div>
     </div>
 
@@ -1581,45 +1561,47 @@
           </details>
         </div>
 
-        <div class="code-block">
+        <pre>
+        <code>
           &lt;!-- Details/Summary Accordion --&gt;
           &lt;details&gt;
-          &lt;summary&gt;Question goes here&lt;/summary&gt;
-          &lt;div&gt;
-          &lt;p&gt;Answer content goes here&lt;/p&gt;
-          &lt;p&gt;Can contain &lt;strong&gt;any HTML&lt;/strong&gt;&lt;/p&gt;
-          &lt;/div&gt;
+            &lt;summary&gt;Question goes here&lt;/summary&gt;
+            &lt;div&gt;
+              &lt;p&gt;Answer content goes here&lt;/p&gt;
+              &lt;p&gt;Can contain &lt;strong&gt;any HTML&lt;/strong&gt;&lt;/p&gt;
+            &lt;/div&gt;
           &lt;/details&gt;
 
           &lt;details open&gt;
-          &lt;summary&gt;Initially open&lt;/summary&gt;
-          &lt;p&gt;This starts expanded&lt;/p&gt;
+            &lt;summary&gt;Initially open&lt;/summary&gt;
+            &lt;p&gt;This starts expanded&lt;/p&gt;
           &lt;/details&gt;
 
           &lt;style&gt;
-          details {
-          border: 1px solid #ddd;
-          border-radius: 4px;
-          margin-bottom: 0.5rem;
-          }
+            details {
+              border: 1px solid #ddd;
+              border-radius: 4px;
+              margin-bottom: 0.5rem;
+            }
 
-          summary {
-          padding: 1rem;
-          background: #f5f5f5;
-          cursor: pointer;
-          font-weight: bold;
-          }
+            summary {
+              padding: 1rem;
+              background: #f5f5f5;
+              cursor: pointer;
+              font-weight: bold;
+            }
 
-          details[open] summary {
-          background: #e3f2fd;
-          }
+            details[open] summary {
+              background: #e3f2fd;
+            }
 
-          details > div {
-          padding: 1rem;
-          background: white;
-          }
+            details > div {
+              padding: 1rem;
+              background: white;
+            }
           &lt;/style&gt;
-        </div>
+        </code>
+        </pre>
       </div>
 
       <div class="demo-card">
@@ -1637,46 +1619,47 @@
           </div>
         </details>
 
-        <div class="code-block">
+        <pre>
+        <code>
           &lt;!-- Custom Styled Details --&gt;
           &lt;details class="styled-details"&gt;
-          &lt;summary&gt;
-          &lt;span class="icon"&gt;▶️&lt;/span&gt;
-          &lt;span&gt;Custom Title&lt;/span&gt;
-          &lt;/summary&gt;
-          &lt;div class="content"&gt;
-          &lt;p&gt;Custom content here&lt;/p&gt;
-          &lt;/div&gt;
+            &lt;summary&gt;
+              &lt;span class="icon"&gt;▶️&lt;/span&gt;
+              &lt;span&gt;Custom Title&lt;/span&gt;
+            &lt;/summary&gt;
+            &lt;div class="content"&gt;
+              &lt;p&gt;Custom content here&lt;/p&gt;
+            &lt;/div&gt;
           &lt;/details&gt;
 
           &lt;style&gt;
-          .styled-details {
-          border: 2px solid #3b82f6;
-          border-radius: 8px;
-          overflow: hidden;
-          }
+            .styled-details {
+              border: 2px solid #3b82f6;
+              border-radius: 8px;
+              overflow: hidden;
+            }
 
-          .styled-details summary {
-          list-style: none;
-          padding: 1rem;
-          background: #eff6ff;
-          display: flex;
-          align-items: center;
-          gap: 0.5rem;
-          }
+            .styled-details summary {
+              list-style: none;
+              padding: 1rem;
+              background: #eff6ff;
+              display: flex;
+              align-items: center;
+              gap: 0.5rem;
+            }
 
-          .styled-details summary::-webkit-details-marker {
-          display: none;
-          }
+            .styled-details summary::-webkit-details-marker {
+              display: none;
+            }
 
-          .styled-details[open] .icon {
-          transform: rotate(90deg);
-          }
+            .styled-details[open] .icon {
+              transform: rotate(90deg);
+            }
 
-          .styled-details .content {
-          padding: 1rem;
-          background: white;
-          }
+            .styled-details .content {
+              padding: 1rem;
+              background: white;
+            }
           &lt;/style&gt;
         </div>
       </div>
@@ -1705,16 +1688,18 @@
           <option value="Grape">
         </datalist>
 
-        <div class="code-block">
+        <pre>
+        <code>
           &lt;!-- Browser handles suggestions automatically --&gt;
           &lt;input type="text" list="fruit-suggestions"&gt;
 
           &lt;datalist id="fruit-suggestions"&gt;
-          &lt;option value="Apple"&gt;
-          &lt;option value="Banana"&gt;
-          &lt;option value="Orange"&gt;
+            &lt;option value="Apple"&gt;
+            &lt;option value="Banana"&gt;
+            &lt;option value="Orange"&gt;
           &lt;/datalist&gt;
-        </div>
+        </code>
+        </pre>
       </div>
 
       <!-- Option 2: CSS Filter with Checkboxes -->
@@ -1741,7 +1726,8 @@
           <div class="filter-item" data-type="fruit">🍊 Orange</div>
         </div>
 
-        <div class="code-block">
+        <pre>
+        <code>
           &lt;!-- CSS Filter using :checked --&gt;
           &lt;input type="radio" name="filter" id="all" checked&gt;
           &lt;input type="radio" name="filter" id="fruits"&gt;
@@ -1750,22 +1736,23 @@
           &lt;label for="fruits"&gt;Fruits&lt;/label&gt;
 
           &lt;div class="items"&gt;
-          &lt;div data-type="fruit"&gt;Apple&lt;/div&gt;
-          &lt;div data-type="vegetable"&gt;Carrot&lt;/div&gt;
+            &lt;div data-type="fruit"&gt;Apple&lt;/div&gt;
+            &lt;div data-type="vegetable"&gt;Carrot&lt;/div&gt;
           &lt;/div&gt;
 
           &lt;style&gt;
-          .items div { display: none; }
+            .items div { display: none; }
 
-          #all:checked ~ .items div {
-          display: block;
-          }
+            #all:checked ~ .items div {
+              display: block;
+            }
 
-          #fruits:checked ~ .items div[data-type="fruit"] {
-          display: block;
-          }
+            #fruits:checked ~ .items div[data-type="fruit"] {
+              display: block;
+            }
           &lt;/style&gt;
-        </div>
+        </code>
+        </pre>
       </div>
 
       <!-- Option 3: The Reality Check -->
@@ -1848,34 +1835,36 @@
           </div>
         </div>
 
-        <div class="code-block">
+        <pre>
+        <code>
           &lt;div class="css-tabs"&gt;
-          &lt;!-- Radio buttons as tab controllers --&gt;
-          &lt;input type="radio" id="tab1" name="tab-group" checked&gt;
-          &lt;input type="radio" id="tab2" name="tab-group"&gt;
+            &lt;!-- Radio buttons as tab controllers --&gt;
+            &lt;input type="radio" id="tab1" name="tab-group" checked&gt;
+            &lt;input type="radio" id="tab2" name="tab-group"&gt;
 
-          &lt;!-- Tab labels --&gt;
-          &lt;label for="tab1"&gt;Tab 1&lt;/label&gt;
-          &lt;label for="tab2"&gt;Tab 2&lt;/label&gt;
+            &lt;!-- Tab labels --&gt;
+            &lt;label for="tab1"&gt;Tab 1&lt;/label&gt;
+            &lt;label for="tab2"&gt;Tab 2&lt;/label&gt;
 
-          &lt;!-- Tab content --&gt;
-          &lt;div class="tab-content"&gt;
-          &lt;div class="tab-pane"&gt;Content 1&lt;/div&gt;
-          &lt;div class="tab-pane"&gt;Content 2&lt;/div&gt;
-          &lt;/div&gt;
+            &lt;!-- Tab content --&gt;
+            &lt;div class="tab-content"&gt;
+              &lt;div class="tab-pane"&gt;Content 1&lt;/div&gt;
+              &lt;div class="tab-pane"&gt;Content 2&lt;/div&gt;
+            &lt;/div&gt;
           &lt;/div&gt;
 
           &lt;style&gt;
-          /* Hide all panes by default */
-          .tab-pane { display: none; }
+            /* Hide all panes by default */
+            .tab-pane { display: none; }
 
-          /* Show pane when corresponding radio is checked */
-          #tab1:checked ~ .tab-content #pane1,
-          #tab2:checked ~ .tab-content #pane2 {
-          display: block;
-          }
+              /* Show pane when corresponding radio is checked */
+              #tab1:checked ~ .tab-content #pane1,
+              #tab2:checked ~ .tab-content #pane2 {
+                display: block;
+            }
           &lt;/style&gt;
-        </div>
+        </code>
+        </pre>
       </div>
 
       <div class="demo-card">
@@ -1984,25 +1973,25 @@
           </div>
         </form>
 
-        <div class="code-block">
+        <pre>
+        <code>
           &lt;form novalidate&gt;
-          &lt;!-- Required field --&gt;
-          &lt;input type="text" required minlength="2" maxlength="50"&gt;
+            &lt;!-- Required field --&gt;
+            &lt;input type="text" required minlength="2" maxlength="50"&gt;
 
-          &lt;!-- Email validation --&gt;
-          &lt;input type="email" required&gt;
+            &lt;!-- Email validation --&gt;
+            &lt;input type="email" required&gt;
 
-          &lt;!-- Password pattern --&gt;
-          &lt;input type="password" required
-          pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"&gt;
+            &lt;!-- Password pattern --&gt;
+            &lt;input type="password" required pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"&gt;
 
-          &lt;!-- Number range --&gt;
-          &lt;input type="number" min="18" max="100"&gt;
+            &lt;!-- Number range --&gt;
+            &lt;input type="number" min="18" max="100"&gt;
 
-          &lt;!-- URL validation --&gt;
-          &lt;input type="url"&gt;
+            &lt;!-- URL validation --&gt;
+            &lt;input type="url"&gt;
 
-          &lt;button type="submit"&gt;Submit&lt;/button&gt;
+            &lt;button type="submit"&gt;Submit&lt;/button&gt;
           &lt;/form&gt;
         </div>
       </div>
@@ -2042,24 +2031,26 @@
           </div>
         </div>
 
-        <div class="code-block">
+        <pre>
+        <code>
           &lt;style&gt;
-          /* Show valid/invalid feedback based on input state */
-          .live-input:valid ~ .validation-feedback .valid {
-          display: block;
-          }
+            /* Show valid/invalid feedback based on input state */
+            .live-input:valid ~ .validation-feedback .valid {
+              display: block;
+            }
 
-          .live-input:invalid:not(:placeholder-shown) ~
-          .validation-feedback .invalid {
-          display: block;
-          }
+            .live-input:invalid:not(:placeholder-shown) ~
+            .validation-feedback .invalid {
+              display: block;
+            }
 
-          /* Password strength based on length */
-          .live-input:valid ~ .password-strength .strength-bar {
-          width: calc(var(--strength) * 100%);
-          }
+            /* Password strength based on length */
+            .live-input:valid ~ .password-strength .strength-bar {
+              width: calc(var(--strength) * 100%);
+            }
           &lt;/style&gt;
-        </div>
+        </code>
+      </pre>
       </div>
 
       <div class="demo-card">

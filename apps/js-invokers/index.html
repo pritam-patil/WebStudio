@@ -1117,18 +1117,14 @@
     }
 
     /* SEARCH DEMO STYLES */
-    .filter-buttons {
+    .filter-controls {
       display: flex;
       gap: 0.5rem;
       margin-bottom: 1rem;
       flex-wrap: wrap;
     }
 
-    .filter-buttons input[type="radio"] {
-      display: none;
-    }
-
-    .filter-buttons label {
+    .filter-controls label {
       padding: 0.5rem 1rem;
       background: #e2e8f0;
       border-radius: 4px;
@@ -1136,16 +1132,24 @@
       transition: all 0.2s ease;
     }
 
-    .filter-buttons label:hover {
+    .filter-controls label:hover {
       background: #cbd5e1;
     }
 
-    .filter-buttons input:checked+label {
+    .filter-controls input:checked+label {
       background: #3b82f6;
       color: white;
     }
 
-    .items-container {
+    .filter-controls input[type="radio"] {
+      display: none;
+    }
+
+    .items .filter-item {
+      display: none;
+    }
+
+    .items {
       display: grid;
       gap: 0.5rem;
     }
@@ -1158,31 +1162,15 @@
       display: none;
     }
 
-    /* Show all items by default */
-    .filter-item {
+    .filter-container:has(.filter-controls #all:checked) .items .filter-item {
       display: block;
     }
 
-    /* Hide all when a filter is selected */
-    #show-fruits:checked~.items-container .filter-item,
-    #show-veggies:checked~.items-container .filter-item {
-      display: none;
-    }
-
-    /* Show only fruits */
-    #show-fruits:checked~.items-container .filter-item[data-type="fruit"] {
+    .filter-container:has(.filter-controls #fruits:checked) .items .filter-item[data-type="fruit"] {
       display: block;
-      animation: fadeIn 0.3s ease;
     }
 
-    /* Show only veggies */
-    #show-veggies:checked~.items-container .filter-item[data-type="vegetable"] {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-
-    /* Show all when "all" is checked */
-    #show-all:checked~.items-container .filter-item {
+    .filter-container:has(.filter-controls #vegetables:checked) .items .filter-item[data-type="vegetable"] {
       display: block;
     }
 
@@ -1706,33 +1694,34 @@
       <div class="demo-card">
         <h3>🎯 Filter by Type (Pure CSS)</h3>
         <p>Click buttons to filter items by category.</p>
+        <div class="filter-container">
+          <div class="filter-controls">
+            <input type="radio" name="filter" id="all" checked>
+            <label for="all">All Items</label>
 
-        <div class="filter-buttons">
-          <input type="radio" name="item-filter" id="show-all" checked>
-          <label for="show-all">All Items</label>
+            <input type="radio" name="filter" id="fruits">
+            <label for="fruits">Fruits</label>
 
-          <input type="radio" name="item-filter" id="show-fruits">
-          <label for="show-fruits">Fruits</label>
+            <input type="radio" name="filter" id="vegetables">
+            <label for="vegetables">Vegetables</label>
+          </div>
 
-          <input type="radio" name="item-filter" id="show-veggies">
-          <label for="show-veggies">Vegetables</label>
-        </div>
-
-        <div class="items-container">
-          <div class="filter-item" data-type="fruit">🍎 Apple</div>
-          <div class="filter-item" data-type="vegetable">🥕 Carrot</div>
-          <div class="filter-item" data-type="fruit">🍌 Banana</div>
-          <div class="filter-item" data-type="vegetable">🥦 Broccoli</div>
-          <div class="filter-item" data-type="fruit">🍊 Orange</div>
+          <div class="items">
+            <div class="filter-item" data-type="fruit">🍎 Apple</div>
+            <div class="filter-item" data-type="vegetable">🥕 Carrot</div>
+            <div class="filter-item" data-type="fruit">🍌 Banana</div>
+            <div class="filter-item" data-type="vegetable">🥦 Broccoli</div>
+            <div class="filter-item" data-type="fruit">🍊 Orange</div>
+          </div>
         </div>
 
         <pre>
         <code>
           &lt;!-- CSS Filter using :checked --&gt;
           &lt;input type="radio" name="filter" id="all" checked&gt;
-          &lt;input type="radio" name="filter" id="fruits"&gt;
-
           &lt;label for="all"&gt;All&lt;/label&gt;
+          
+          &lt;input type="radio" name="filter" id="fruits"&gt;
           &lt;label for="fruits"&gt;Fruits&lt;/label&gt;
 
           &lt;div class="items"&gt;

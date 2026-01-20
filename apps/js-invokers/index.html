@@ -689,9 +689,9 @@
       animation: fadeIn 0.3s ease;
     }
 
-    #tab1:checked~.tab-content #pane1,
-    #tab2:checked~.tab-content #pane2,
-    #tab3:checked~.tab-content #pane3 {
+    .css-tabs:has(.tab-headers #tab1:checked) .tab-content #pane1,
+    .css-tabs:has(.tab-headers #tab2:checked) .tab-content #pane2,
+    .css-tabs:has(.tab-headers #tab3:checked) .tab-content #pane3 {
       display: block;
     }
 
@@ -2010,7 +2010,7 @@
 
           <div class="form-group">
             <label for="live-password">Password Strength</label>
-            <input type="password" id="live-password" placeholder="Type to see strength" class="live-input">
+            <input type="password" id="live-password" placeholder="Type to see strength" class="live-input" pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
             <div class="password-strength">
               <div class="strength-meter">
                 <div class="strength-bar"></div>

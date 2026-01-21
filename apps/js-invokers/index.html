@@ -689,9 +689,9 @@
       animation: fadeIn 0.3s ease;
     }
 
-    #tab1:checked~.tab-content #pane1,
-    #tab2:checked~.tab-content #pane2,
-    #tab3:checked~.tab-content #pane3 {
+    .css-tabs:has(.tab-headers #tab1:checked) .tab-content #pane1,
+    .css-tabs:has(.tab-headers #tab2:checked) .tab-content #pane2,
+    .css-tabs:has(.tab-headers #tab3:checked) .tab-content #pane3 {
       display: block;
     }
 
@@ -1117,18 +1117,14 @@
     }
 
     /* SEARCH DEMO STYLES */
-    .filter-buttons {
+    .filter-controls {
       display: flex;
       gap: 0.5rem;
       margin-bottom: 1rem;
       flex-wrap: wrap;
     }
 
-    .filter-buttons input[type="radio"] {
-      display: none;
-    }
-
-    .filter-buttons label {
+    .filter-controls label {
       padding: 0.5rem 1rem;
       background: #e2e8f0;
       border-radius: 4px;
@@ -1136,16 +1132,24 @@
       transition: all 0.2s ease;
     }
 
-    .filter-buttons label:hover {
+    .filter-controls label:hover {
       background: #cbd5e1;
     }
 
-    .filter-buttons input:checked+label {
+    .filter-controls input:checked+label {
       background: #3b82f6;
       color: white;
     }
 
-    .items-container {
+    .filter-controls input[type="radio"] {
+      display: none;
+    }
+
+    .items .filter-item {
+      display: none;
+    }
+
+    .items {
       display: grid;
       gap: 0.5rem;
     }
@@ -1158,31 +1162,15 @@
       display: none;
     }
 
-    /* Show all items by default */
-    .filter-item {
+    .filter-container:has(.filter-controls #all:checked) .items .filter-item {
       display: block;
     }
 
-    /* Hide all when a filter is selected */
-    #show-fruits:checked~.items-container .filter-item,
-    #show-veggies:checked~.items-container .filter-item {
-      display: none;
-    }
-
-    /* Show only fruits */
-    #show-fruits:checked~.items-container .filter-item[data-type="fruit"] {
+    .filter-container:has(.filter-controls #fruits:checked) .items .filter-item[data-type="fruit"] {
       display: block;
-      animation: fadeIn 0.3s ease;
     }
 
-    /* Show only veggies */
-    #show-veggies:checked~.items-container .filter-item[data-type="vegetable"] {
-      display: block;
-      animation: fadeIn 0.3s ease;
-    }
-
-    /* Show all when "all" is checked */
-    #show-all:checked~.items-container .filter-item {
+    .filter-container:has(.filter-controls #vegetables:checked) .items .filter-item[data-type="vegetable"] {
       display: block;
     }
 
@@ -1361,7 +1349,7 @@
         <code>
           &lt;!-- Form inside Popover --&gt;
           &lt;button popovertarget="login-popover"&gt;
-           Show Login
+           Login Form
           &lt;/button&gt;
 
           &lt;div popover id="login-popover"&gt;
@@ -1384,6 +1372,14 @@
           &lt;/div&gt;
         </code>
         </pre>
+      </div>
+      <div class="demo-card">
+        <h3>🔧 Browser Support Check</h3>
+        <div class="browser-check">
+          <p><strong>Popover support:</strong>
+            <span id="popover-support">Testing...</span>
+          </p>
+        </div>
       </div>
     </div>
 
@@ -1510,6 +1506,14 @@
           &lt;/dialog&gt;
         </code>
         </pre>
+      </div>
+      <div class="demo-card">
+        <h3>🔧 Browser Support Check</h3>
+        <div class="browser-check">
+          <p><strong>Dialog support:</strong>
+            <span id="dialog-support">Testing...</span>
+          </p>
+        </div>
       </div>
     </div>
 
@@ -1706,33 +1710,34 @@
       <div class="demo-card">
         <h3>🎯 Filter by Type (Pure CSS)</h3>
         <p>Click buttons to filter items by category.</p>
+        <div class="filter-container">
+          <div class="filter-controls">
+            <input type="radio" name="filter" id="all" checked>
+            <label for="all">All Items</label>
 
-        <div class="filter-buttons">
-          <input type="radio" name="item-filter" id="show-all" checked>
-          <label for="show-all">All Items</label>
+            <input type="radio" name="filter" id="fruits">
+            <label for="fruits">Fruits</label>
 
-          <input type="radio" name="item-filter" id="show-fruits">
-          <label for="show-fruits">Fruits</label>
+            <input type="radio" name="filter" id="vegetables">
+            <label for="vegetables">Vegetables</label>
+          </div>
 
-          <input type="radio" name="item-filter" id="show-veggies">
-          <label for="show-veggies">Vegetables</label>
-        </div>
-
-        <div class="items-container">
-          <div class="filter-item" data-type="fruit">🍎 Apple</div>
-          <div class="filter-item" data-type="vegetable">🥕 Carrot</div>
-          <div class="filter-item" data-type="fruit">🍌 Banana</div>
-          <div class="filter-item" data-type="vegetable">🥦 Broccoli</div>
-          <div class="filter-item" data-type="fruit">🍊 Orange</div>
+          <div class="items">
+            <div class="filter-item" data-type="fruit">🍎 Apple</div>
+            <div class="filter-item" data-type="vegetable">🥕 Carrot</div>
+            <div class="filter-item" data-type="fruit">🍌 Banana</div>
+            <div class="filter-item" data-type="vegetable">🥦 Broccoli</div>
+            <div class="filter-item" data-type="fruit">🍊 Orange</div>
+          </div>
         </div>
 
         <pre>
         <code>
           &lt;!-- CSS Filter using :checked --&gt;
           &lt;input type="radio" name="filter" id="all" checked&gt;
-          &lt;input type="radio" name="filter" id="fruits"&gt;
-
           &lt;label for="all"&gt;All&lt;/label&gt;
+          
+          &lt;input type="radio" name="filter" id="fruits"&gt;
           &lt;label for="fruits"&gt;Fruits&lt;/label&gt;
 
           &lt;div class="items"&gt;
@@ -1993,45 +1998,45 @@
 
             &lt;button type="submit"&gt;Submit&lt;/button&gt;
           &lt;/form&gt;
-        </div>
-      </div>
+          </code>
+        </pre>
+        <div class="demo-card">
+          <h3>🎯 Real-time Validation with CSS</h3>
+          <p>Fields validate as you type using CSS pseudo-classes.</p>
 
-      <div class="demo-card">
-        <h3>🎯 Real-time Validation with CSS</h3>
-        <p>Fields validate as you type using CSS pseudo-classes.</p>
-
-        <div class="live-validation">
-          <div class="form-group">
-            <label for="live-email">Email</label>
-            <input type="email" id="live-email" placeholder="Type valid/invalid email" class="live-input">
-            <div class="validation-feedback">
-              <span class="valid">✓ Valid email</span>
-              <span class="invalid">✗ Please enter a valid email</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="live-url">Website URL</label>
-            <input type="url" id="live-url" placeholder="https://example.com" class="live-input">
-            <div class="validation-feedback">
-              <span class="valid">✓ Valid URL</span>
-              <span class="invalid">✗ Please enter a valid URL</span>
-            </div>
-          </div>
-
-          <div class="form-group">
-            <label for="live-password">Password Strength</label>
-            <input type="password" id="live-password" placeholder="Type to see strength" class="live-input">
-            <div class="password-strength">
-              <div class="strength-meter">
-                <div class="strength-bar"></div>
+          <div class="live-validation">
+            <div class="form-group">
+              <label for="live-email">Email</label>
+              <input type="email" id="live-email" placeholder="Type valid/invalid email" class="live-input">
+              <div class="validation-feedback">
+                <span class="valid">✓ Valid email</span>
+                <span class="invalid">✗ Please enter a valid email</span>
               </div>
-              <div class="strength-text">Password strength</div>
+            </div>
+
+            <div class="form-group">
+              <label for="live-url">Website URL</label>
+              <input type="url" id="live-url" placeholder="https://example.com" class="live-input">
+              <div class="validation-feedback">
+                <span class="valid">✓ Valid URL</span>
+                <span class="invalid">✗ Please enter a valid URL</span>
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="live-password">Password Strength</label>
+              <input type="password" id="live-password" placeholder="Type to see strength" class="live-input"
+                pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}">
+              <div class="password-strength">
+                <div class="strength-meter">
+                  <div class="strength-bar"></div>
+                </div>
+                <div class="strength-text">Password strength</div>
+              </div>
             </div>
           </div>
-        </div>
 
-        <pre>
+          <pre>
         <code>
           &lt;style&gt;
             /* Show valid/invalid feedback based on input state */
@@ -2051,49 +2056,40 @@
           &lt;/style&gt;
         </code>
       </pre>
-      </div>
+        </div>
 
-      <div class="demo-card">
-        <h3>🔔 Validation Patterns Cheatsheet</h3>
+        <div class="demo-card">
+          <h3>🔔 Validation Patterns Cheatsheet</h3>
 
-        <div class="patterns-grid">
-          <div class="pattern-card">
-            <code>required</code>
-            <p>Field must be filled</p>
-          </div>
-          <div class="pattern-card">
-            <code>minlength="3"</code>
-            <p>Minimum 3 characters</p>
-          </div>
-          <div class="pattern-card">
-            <code>maxlength="50"</code>
-            <p>Maximum 50 characters</p>
-          </div>
-          <div class="pattern-card">
-            <code>min="0" max="100"</code>
-            <p>Number range 0-100</p>
-          </div>
-          <div class="pattern-card">
-            <code>pattern="\d{3}-\d{3}"</code>
-            <p>Custom regex pattern</p>
-          </div>
-          <div class="pattern-card">
-            <code>type="email"</code>
-            <p>Valid email format</p>
+          <div class="patterns-grid">
+            <div class="pattern-card">
+              <code>required</code>
+              <p>Field must be filled</p>
+            </div>
+            <div class="pattern-card">
+              <code>minlength="3"</code>
+              <p>Minimum 3 characters</p>
+            </div>
+            <div class="pattern-card">
+              <code>maxlength="50"</code>
+              <p>Maximum 50 characters</p>
+            </div>
+            <div class="pattern-card">
+              <code>min="0" max="100"</code>
+              <p>Number range 0-100</p>
+            </div>
+            <div class="pattern-card">
+              <code>pattern="\d{3}-\d{3}"</code>
+              <p>Custom regex pattern</p>
+            </div>
+            <div class="pattern-card">
+              <code>type="email"</code>
+              <p>Valid email format</p>
+            </div>
           </div>
         </div>
       </div>
     </div>
-    <div class="demo-card">
-      <h3>🔧 Browser Support Check</h3>
-      <div class="browser-check">
-        <p><strong>Popover support:</strong>
-          <span id="popover-support">Testing...</span>
-        </p>
-        <p><strong>Dialog support:</strong>
-          <span id="dialog-support">Testing...</span>
-        </p>
-      </div>
     </div>
     <script>
       // Minimal diagnostic script
